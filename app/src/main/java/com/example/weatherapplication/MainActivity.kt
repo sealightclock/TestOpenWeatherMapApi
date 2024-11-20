@@ -103,13 +103,13 @@ class MainActivity : AppCompatActivity() {
                 if (location != null) {
                     // Use this test case with hard-coded city name first to see how the code works:
                     //api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=cc9a943e9b0082101297ca40b03f1f83
-                    //weather_url1 = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=cc9a943e9b0082101297ca40b03f1f83"
-                    //weather_url1 = "https://api.openweathermap.org/data/2.5/weather?q=Irvine,USA&APPID=cc9a943e9b0082101297ca40b03f1f83"
+                    //weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=cc9a943e9b0082101297ca40b03f1f83"
+                    //weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=Irvine,USA&APPID=cc9a943e9b0082101297ca40b03f1f83"
 
                     // Then use this code:
                     weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&APPID=${apiKey}"
 
-                    Log.v(TAG, "obtainLocation: addOnSuccessListener: weather_url1=[$weatherUrl]")
+                    Log.v(TAG, "obtainLocation: addOnSuccessListener: weatherUrl=[$weatherUrl]")
                 }
                 // this function will
                 // fetch data from URL
@@ -153,9 +153,9 @@ class MainActivity : AppCompatActivity() {
             },
             // In case of any error
             {
-                textView.text = "That didn't work!"
+                textView.text = "That didn't work! Check internet, api key, etc."
 
-                Log.e(TAG, "getTemp: That didn't work!")
+                Log.e(TAG, "getTemp: That didn't work! Check internet, api key, etc.")
             })
         queue.add(stringReq)
     }
