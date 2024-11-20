@@ -18,21 +18,18 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.json.JSONObject
 
-private const val TAG = "WA: MainActivity"
+private const val TAG = "TOWM: MainActivity"
 
 class MainActivity : AppCompatActivity() {
-
     // weather url to get JSON
-    var weather_url1 = ""
+    private var weatherUrl = ""
 
-    // api id for url from https://home.openweathermap.org/api_keys
-    var api_key = "cc9a943e9b0082101297ca40b03f1f83"
+    // api id for url from https://home.openweathermap.org/api_keys for Jonathan Zhong:
+    private var apiKey = "cc9a943e9b0082101297ca40b03f1f83"
 
     private lateinit var btVar1 : Button
     private lateinit var textView: TextView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
@@ -110,9 +107,9 @@ class MainActivity : AppCompatActivity() {
                     //weather_url1 = "https://api.openweathermap.org/data/2.5/weather?q=Irvine,USA&APPID=cc9a943e9b0082101297ca40b03f1f83"
 
                     // Then use this code:
-                    weather_url1 = "https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&APPID=${api_key}"
+                    weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&APPID=${apiKey}"
 
-                    Log.v(TAG, "obtainLocation: addOnSuccessListener: weather_url1=[$weather_url1]")
+                    Log.v(TAG, "obtainLocation: addOnSuccessListener: weather_url1=[$weatherUrl]")
                 }
                 // this function will
                 // fetch data from URL
@@ -120,15 +117,18 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Location Permission not granted", Toast.LENGTH_SHORT).show()
+
+                Log.e(TAG, "obtainLocation: addOnSuccessListener: stackTrace=\n${exception.printStackTrace()}")
             }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getTemp() {
         Log.d(TAG, "getTemp")
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url: String = weather_url1
+        val url: String = weatherUrl
 
         // Request a string response
         // from the provided URL.
@@ -147,9 +147,9 @@ class MainActivity : AppCompatActivity() {
 
             Log.v(TAG, "getTemp: city=[$city]")
 
-                // set the temperature and the city
-                // name using getString() function
-                textView.text = "${temperature} deg Celcius in ${city}"
+            // set the temperature and the city
+            // name using getString() function
+            textView.text = "$temperature degree Celsius in $city"
             },
             // In case of any error
             {
@@ -158,5 +158,9 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, "getTemp: That didn't work!")
             })
         queue.add(stringReq)
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }

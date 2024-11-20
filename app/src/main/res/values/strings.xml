@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Weather Application</string>
+    <string name="app_name">TestOpenMap</string>
+    <string name="get_weather">Get Weather</string>
+    <string name="get_temperature_here">Get temperature here</string>
 </resources>
