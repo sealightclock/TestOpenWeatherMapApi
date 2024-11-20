@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btVar1 : Button
     private lateinit var textView: TextView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var weatherViewModel: WeatherViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
@@ -54,6 +57,17 @@ class MainActivity : AppCompatActivity() {
             // of the last location
             checkForPermission()
         }
+
+        weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
+
+        weatherViewModel.weatherInfo.observe(this) { data ->
+            Log.d(TAG, "onCreate: weatherViewModel.weatherInfo.observe: data=[$data]")
+
+            // Update UI with the new data
+            //textView.text = data
+        }
+
+        weatherViewModel.getWeatherInfoFromWeb()
     }
 
     private fun checkForPermission() {
