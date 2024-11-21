@@ -12,12 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import org.json.JSONObject
 
 private const val TAG = "TOWM: MainActivity"
 
@@ -64,10 +60,8 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onCreate: weatherViewModel.weatherInfo.observe: data=[$data]")
 
             // Update UI with the new data
-            //textView.text = data
+            textView.text = data
         }
-
-        weatherViewModel.getWeatherInfoFromWeb()
     }
 
     private fun checkForPermission() {
@@ -127,51 +121,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 // this function will
                 // fetch data from URL
-                getTemp()
+                weatherViewModel.getWeatherInfo(this, weatherUrl)
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Location Permission not granted", Toast.LENGTH_SHORT).show()
 
                 Log.e(TAG, "obtainLocation: addOnSuccessListener: stackTrace=\n${exception.printStackTrace()}")
             }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun getTemp() {
-        Log.d(TAG, "getTemp")
-
-        // Instantiate the RequestQueue.
-        val queue = Volley.newRequestQueue(this)
-        val url: String = weatherUrl
-
-        // Request a string response
-        // from the provided URL.
-        val stringReq = StringRequest(Request.Method.GET, url, { response ->
-            // get the JSON object
-            val obj = JSONObject(response)
-
-            // Getting the temperature readings from response
-            val main: JSONObject = obj.getJSONObject("main")
-            val temperature = main.getString("temp")
-
-            Log.v(TAG, "getTemp: temperature=[$temperature]")
-
-            // Getting the city name
-            val city = obj.getString("name")
-
-            Log.v(TAG, "getTemp: city=[$city]")
-
-            // set the temperature and the city
-            // name using getString() function
-            textView.text = "$temperature degree Celsius in $city"
-            },
-            // In case of any error
-            {
-                textView.text = "That didn't work! Check internet, api key, etc."
-
-                Log.e(TAG, "getTemp: That didn't work! Check internet, api key, etc.")
-            })
-        queue.add(stringReq)
     }
 
     companion object {
