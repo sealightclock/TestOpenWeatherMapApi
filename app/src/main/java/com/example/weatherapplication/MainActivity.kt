@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity() {
     // api id for url from https://home.openweathermap.org/api_keys for Jonathan Zhong:
     private var apiKey = "cc9a943e9b0082101297ca40b03f1f83"
 
-    private lateinit var btVar1 : Button
-    private lateinit var textView: TextView
+    private lateinit var GetWeatherButton : Button
+    private lateinit var weatherInfoTextView: TextView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var weatherViewModel: WeatherViewModel
@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         // link the textView in which the
         // temperature will be displayed
-        textView = findViewById(R.id.textView)
+        weatherInfoTextView = findViewById(R.id.weather_info_text_view)
 
-        btVar1 = findViewById(R.id.btVar1)
+        GetWeatherButton = findViewById(R.id.get_weather_button)
 
         // create an instance of the Fused
         // Location Provider Client
@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
 
         // on clicking this button function to
         // get the coordinates will be called
-        btVar1.setOnClickListener {
+        GetWeatherButton.setOnClickListener {
             // function to find the coordinates
             // of the last location
-            checkForPermission()
+            getWeatherInfo()
         }
 
         weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
@@ -60,12 +60,17 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onCreate: weatherViewModel.weatherInfo.observe: data=[$data]")
 
             // Update UI with the new data
-            textView.text = data
+            weatherInfoTextView.text = data
         }
     }
 
-    private fun checkForPermission() {
-        Log.d(TAG, "checkForPermission")
+    /**
+     * This starts the process of getting weather info.
+     * [1] Check permissions or request for permissions
+     * [2] Obtain location
+     */
+    private fun getWeatherInfo() {
+        Log.d(TAG, "getWeatherInfo")
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
