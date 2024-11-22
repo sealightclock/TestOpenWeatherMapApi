@@ -18,8 +18,8 @@ class WeatherViewModel : ViewModel() {
     val weatherInfo: LiveData<String>
         get() = _weatherInfo
     
-    fun getWeatherInfo(context: Context, weatherUrl: String) {
-        Log.d(TAG, "getWeatherInfo, weatherUrl=[$weatherUrl]")
+    fun getWeatherInfoApi(context: Context, weatherUrl: String) {
+        Log.d(TAG, "getWeatherInfoApi: weatherUrl=[$weatherUrl]")
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(context)
@@ -36,12 +36,12 @@ class WeatherViewModel : ViewModel() {
             val main: JSONObject = obj.getJSONObject("main")
             val temperature = main.getString("temp")
 
-            Log.v(TAG, "getWeatherInfo: temperature=[$temperature]")
+            Log.v(TAG, "getWeatherInfoApi: temperature=[$temperature]")
 
             // Getting the city name
             val city = obj.getString("name")
 
-            Log.v(TAG, "getWeatherInfo: city=[$city]")
+            Log.v(TAG, "getWeatherInfoApi: city=[$city]")
 
             // set the temperature and the city
             // name using getString() function
@@ -51,7 +51,7 @@ class WeatherViewModel : ViewModel() {
             {
                 _weatherInfo.value = "That didn't work! Check internet, api key, etc."
 
-                Log.e(TAG, "getWeatherInfo: That didn't work! Check internet, api key, etc.")
+                Log.e(TAG, "getWeatherInfoApi: That didn't work! Check internet, api key, etc.")
             })
         
         queue.add(stringReq)

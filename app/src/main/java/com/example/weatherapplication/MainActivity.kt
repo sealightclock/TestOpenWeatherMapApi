@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         GetWeatherButton.setOnClickListener {
             // function to find the coordinates
             // of the last location
-            getWeatherInfo()
+            getWeatherInfoUi()
         }
 
         weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity() {
      * [1] Check permissions or request for permissions
      * [2] Obtain location
      */
-    private fun getWeatherInfo() {
-        Log.d(TAG, "getWeatherInfo")
+    private fun getWeatherInfoUi() {
+        Log.d(TAG, "getWeatherInfoUi")
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 // this function will
                 // fetch data from URL
-                weatherViewModel.getWeatherInfo(this, weatherUrl)
+                weatherViewModel.getWeatherInfoApi(this, weatherUrl)
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Location Permission not granted", Toast.LENGTH_SHORT).show()
