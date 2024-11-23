@@ -4,36 +4,32 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.weatherapplication.databinding.ActivityMainBinding
 
 private const val TAG = "TOWM: MainActivity"
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var getWeatherButton : Button
-    private lateinit var weatherInfoTextView: TextView
-
+    // ViewModel:
     private lateinit var weatherViewModel: WeatherViewModel
+
+    // Data binding:
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate")
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        // link the textView in which the
-        // temperature will be displayed
-        weatherInfoTextView = findViewById(R.id.weather_info_text_view)
+        // View binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        getWeatherButton = findViewById(R.id.get_weather_button)
-
-        // on clicking this button function to
-        // get the coordinates will be called
-        getWeatherButton.setOnClickListener {
+        binding.getWeatherButton.setOnClickListener {
             // function to find the coordinates
             // of the last location
             getWeatherInfoUi()
@@ -45,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onCreate: weatherViewModel.weatherInfo.observe: data=[$data]")
 
             // Update UI with the new data
-            weatherInfoTextView.text = data
+            binding.weatherInfoTextView.text = data
         }
     }
 
